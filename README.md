@@ -1,46 +1,8 @@
-## 博客交流群
 
-2023-12-09：最近项目处于重构中，会经历快速迭代，线上版本不一定是最新，暂时不要上生产环境
-
-2023-12-27: v2 版本重构 初步完成, 从之间的 Java 风格项目改为 Golang 风格, 还有些功能在修补!
-
-项目交流 QQ 群号：777260310
-
-## 博客介绍
-
-<p align=center>
-<a href="http://www.hahacode.cn">
-<img src="./images/头像.jpeg"  width="200" hight="200" alt="阵、雨的个人博客" style="border-radius: 50%">
-</a>
-</p>
-
-<p align="center">
-   <a target="_blank" href="#">
-      <img style="display: inline-block;" src="https://img.shields.io/badge/Go-1.19-blue"/>
-      <img style="display: inline-block;" src="https://img.shields.io/badge/Gin-v1.8.1-blue"/>
-      <img style="display: inline-block;" src="https://img.shields.io/badge/Casbin-v2.56.0-blue"/>
-      <img style="display: inline-block;" src="https://img.shields.io/badge/mysql-8.0-blue"/>
-      <img style="display: inline-block;" src="https://img.shields.io/badge/GORM-v1.24.0-blue"/>
-      <img style="display: inline-block;" src="https://img.shields.io/badge/redis-7.0-red"/>
-      <img style="display: inline-block;" src="https://img.shields.io/badge/vue-v3.X-green"/>
-    </a>
-</p>
-
-[在线预览](#在线预览) | [项目介绍](#项目介绍) | [技术介绍](#技术介绍) | [目录结构](#目录结构) | [环境介绍](#环境介绍) | [快速开始](#快速开始) | [总结&鸣谢](#总结鸣谢)  | [后续计划](#后续计划)
-
-您的 Star 是我坚持的动力，感谢大家的支持，欢迎提交 Pr 共同改进项目。
-
-Github 地址：[https://github.com/szluyu99/gin-vue-blog](https://github.com/szluyu99/gin-vue-blog)
-
-Gitee 地址：[https://gitee.com/szluyu99/gin-vue-blog](https://gitee.com/szluyu99/gin-vue-blog)
+Github 地址：[https://github.com/ThreadTdt/gin_blog.git]
 
 ## 在线预览
 
-博客前台链接：[hahacode.cn](https://www.hahacode.cn)（已适配移动端）
-
-博客后台链接：[hahacode.cn/admin](https://www.hahacode.cn/admin)（暂未专门适配移动端）
-
-> 博客域名已通过备案，且配置 SSL，通过 https 访问
 
 测试账号：test@qq.com，密码：11111，前后台都可用这个账号登录
 

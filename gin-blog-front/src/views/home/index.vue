@@ -58,8 +58,8 @@ onMounted(async () => {
 // 过滤 Markdown 符号: 先转 Html 再去除 Html 标签
 function filterMdSymbol(md) {
   return marked(md) // 转 HTML
-    .replace(/<\/?[^>]*>/g, '') // 正则去除 Html 标签
-    .replace(/[|]*\n/, '')
+    .replace(/<[^>]*>/g, '') // 正则去除 Html 标签
+    .replace(/\|*\n/, '')
     .replace(/&npsp;/gi, '')
 }
 

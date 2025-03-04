@@ -22,12 +22,6 @@ import (
 func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// FIXME: 前后台 session 混乱, 暂时无法将用户信息挂载在 gin context 缓存
-		// auth, _ := handle.CurrentUserAuth(c)
-		// if auth != nil {
-		// 	slog.Debug("[middleware-JWTAuth] user auth exist, skip jwt auth")
-		// 	c.Next()
-		// 	return
-		// }
 
 		slog.Debug("[middleware-JWTAuth] user auth not exist, do jwt auth")
 

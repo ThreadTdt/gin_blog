@@ -84,9 +84,6 @@ func Logger() gin.HandlerFunc {
 			slog.String("ip", c.ClientIP()),
 			slog.Int("size", c.Writer.Size()),
 			slog.Duration("cost", cost),
-			// slog.String("body", c.Request.PostForm.Encode()),
-			// slog.String("user-agent", c.Request.UserAgent()),
-			// slog.String("errors", c.Errors.ByType(gin.ErrorTypePrivate).String()),
 		)
 	}
 }
@@ -112,17 +109,6 @@ func Recovery(stack bool) gin.HandlerFunc {
 
 				// 发生 panic, 返回错误信息
 				handle.ReturnHttpResponse(c, http.StatusInternalServerError, g.FAIL, g.GetMsg(g.FAIL), err)
-
-				// 处理 panic(xxx) 的操作
-				// if code, ok := err.(int); ok { // panic(code) 根据错误码获取 msg
-				// 	v2.Return(c, code, nil)
-				// } else if msg, ok := err.(string); ok { // panic(string) 返回 string
-				// 	v2.ReturnJSON(c, http.StatusOK, g.FAIL, msg, nil)
-				// } else if e, ok := err.(error); ok { // panic(error) 发送消息
-				// 	v2.ReturnJSON(c, http.StatusOK, g.FAIL, e.Error(), nil)
-				// } else { // 其他
-				// 	v2.Return(c, g.FAIL, nil)
-				// }
 
 				httpRequest, _ := httputil.DumpRequest(c.Request, false)
 				if brokenPipe {

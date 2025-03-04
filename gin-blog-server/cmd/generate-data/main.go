@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	configPath := flag.String("c", "../../config.yml", "配置文件路径")
+	configPath := flag.String("c", "D:\\Software\\Goland\\projects\\gin-vue-blog\\gin-blog-server\\config.yml", "配置文件路径")
 	typeName := flag.String("t", "all", "要初始化的数据类型: config | auth | page | all")
 	flag.Parse()
 

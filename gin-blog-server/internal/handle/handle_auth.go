@@ -74,12 +74,6 @@ func (*UserAuth) Login(c *gin.Context) {
 	ipAddress := utils.IP.GetIpAddress(c)
 	ipSource := utils.IP.GetIpSourceSimpleIdle(ipAddress)
 
-	// browser, os := "unknown", "unknown"
-	// if userAgent := utils.IP.GetUserAgent(c); userAgent != nil {
-	// 	browser = userAgent.Name + " " + userAgent.Version.String()
-	// 	os = userAgent.OS + " " + userAgent.OSVersion.String()
-	// }
-
 	userInfo, err := model.GetUserInfoById(db, userAuth.UserInfoId)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -108,9 +102,6 @@ func (*UserAuth) Login(c *gin.Context) {
 	}
 
 	// 登录信息正确, 生成 Token
-
-	// UUID 生成方法: ip + 浏览器信息 + 操作系统信息
-	// uuid := utils.MD5(ipAddress + browser + os)
 	conf := g.Conf.JWT
 	token, err := jwt.GenToken(conf.Secret, conf.Issuer, int(conf.Expire), userAuth.ID, roleIds)
 	if err != nil {

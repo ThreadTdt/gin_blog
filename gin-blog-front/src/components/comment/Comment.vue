@@ -40,6 +40,7 @@ async function getComments() {
   listLoading.value = true
   try {
     const resp = await api.getComments(params)
+    console.log(resp)
     console.log(resp.data.page_data)
 
     // * 全局加载更多, 0.8s 延时
@@ -256,9 +257,9 @@ const isLike = computed(() => id => userStore.commentLikeSet.includes(id))
               <!-- 回复内容 -->
               <div>
                 <!-- 回复用户名: 自己回复自己不显示 "@名称" -->
-                <template v-if="reply.user_id !== comment.user_id">
+                <template v-if="reply.reply_user_id !== comment.user_id">
                   <a v-if="reply.user?.info?.website" :href="reply.reply_website" target="_blank">
-                    @{{ reply.user?.info?.nickname }}
+                    @{{ reply.reply_username }}
                   </a>
                   <span v-else>
                     @{{ reply.user?.info?.nickname }}

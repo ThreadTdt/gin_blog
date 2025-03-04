@@ -17,13 +17,15 @@ const (
 
 type Comment struct {
 	Model
-	UserId      int    `json:"user_id"`       // 评论者
-	ReplyUserId int    `json:"reply_user_id"` // 被回复者
-	TopicId     int    `json:"topic_id"`      // 评论的文章
-	ParentId    int    `json:"parent_id"`     // 父评论
-	Content     string `gorm:"type:varchar(500);not null" json:"content"`
-	Type        int    `gorm:"type:tinyint(1);not null;comment:评论类型(1.文章 2.友链 3.说说)" json:"type"` // 评论类型 1.文章 2.友链 3.说说
-	IsReview    bool   `json:"is_review"`
+	UserId        int    `json:"user_id"`       // 评论者
+	ReplyUserId   int    `json:"reply_user_id"` // 被回复者
+	UserName      string `json:"user_name"`     //评论者名称
+	ReplyUsername string `json:"reply_username"`
+	TopicId       int    `json:"topic_id"`  // 评论的文章
+	ParentId      int    `json:"parent_id"` // 父评论
+	Content       string `gorm:"type:varchar(500);not null" json:"content"`
+	Type          int    `gorm:"type:tinyint(1);not null;comment:评论类型(1.文章 2.友链 3.说说)" json:"type"` // 评论类型 1.文章 2.友链 3.说说
+	IsReview      bool   `json:"is_review"`
 
 	// Belongs To
 	User      *UserAuth `gorm:"foreignKey:UserId" json:"user"`
@@ -40,12 +42,18 @@ type CommentVO struct {
 
 // 新增评论
 func AddComment(db *gorm.DB, userId, typ, topicId int, content string, isReview bool) (*Comment, error) {
+	id, err := GetUserInfoById(db, userId)
+	if err != nil {
+		return nil, err
+	}
 	comment := Comment{
-		UserId:   userId,
-		TopicId:  topicId,
-		Content:  content,
-		Type:     typ,
-		IsReview: isReview,
+		UserName:      id.Nickname,
+		ReplyUsername: "",
+		UserId:        userId,
+		TopicId:       topicId,
+		Content:       content,
+		Type:          typ,
+		IsReview:      isReview,
 	}
 	result := db.Create(&comment)
 	return &comment, result.Error
@@ -58,15 +66,21 @@ func ReplyComment(db *gorm.DB, userId, replyUserId, parentId int, content string
 	if result.Error != nil {
 		return nil, result.Error
 	}
-
+	user, err := GetUserInfoById(db, userId)
+	if err != nil {
+		return nil, err
+	}
+	reply_user, _ := GetUserInfoById(db, replyUserId)
 	comment := Comment{
-		UserId:      userId,
-		Content:     content,
-		ReplyUserId: replyUserId,
-		ParentId:    parentId,
-		IsReview:    isReview,
-		TopicId:     parent.TopicId, // 主题和父评论一样
-		Type:        parent.Type,    // 类型和父评论一样
+		UserName:      user.Nickname,
+		ReplyUsername: reply_user.Nickname,
+		UserId:        userId,
+		Content:       content,
+		ReplyUserId:   replyUserId,
+		ParentId:      parentId,
+		IsReview:      isReview,
+		TopicId:       parent.TopicId, // 主题和父评论一样
+		Type:          parent.Type,    // 类型和父评论一样
 	}
 	result = db.Create(&comment)
 	return &comment, result.Error
@@ -89,7 +103,7 @@ func GetCommentList(db *gorm.DB, page, size, typ int, isReview *bool, nickname s
 		Preload("User").Preload("User.UserInfo").
 		Preload("ReplyUser").Preload("ReplyUser.UserInfo").
 		Preload("Article").
-		Order("id DESC").
+		Order("created_at").
 		Scopes(Paginate(page, size)).
 		Find(&data)
 
@@ -113,7 +127,7 @@ func GetCommentVOList(db *gorm.DB, page, size, topic, typ int) (data []CommentVO
 		Count(&total).
 		Preload("User").Preload("User.UserInfo").
 		// Preload("ReplyUser").Preload("ReplyUser.UserInfo").
-		Order("id DESC").
+		Order("created_at").
 		Scopes(Paginate(page, size))
 	if err := tx.Find(&list).Error; err != nil {
 		return nil, 0, err
@@ -127,7 +141,7 @@ func GetCommentVOList(db *gorm.DB, page, size, topic, typ int) (data []CommentVO
 		tx.Where("parent_id = ?", v.ID).
 			Preload("User").Preload("User.UserInfo").
 			// Preload("ReplyUser").Preload("ReplyUser.UserInfo")
-			Order("id DESC")
+			Order("created_at")
 		if err := tx.Find(&replyList).Error; err != nil {
 			return nil, 0, err
 		}
@@ -147,7 +161,7 @@ func GetCommentReplyList(db *gorm.DB, id, page, size int) (data []Comment, err e
 	result := db.Model(&Comment{}).
 		Where(&Comment{ParentId: id}).
 		Preload("User").Preload("User.UserInfo").
-		Order("id DESC").
+		Order("created_at").
 		Scopes(Paginate(page, size)).
 		Find(&data)
 	return data, result.Error

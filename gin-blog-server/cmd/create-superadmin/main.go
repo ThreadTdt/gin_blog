@@ -18,7 +18,7 @@ import (
 func main() {
 	username := flag.String("username", "", "超级管理员账户")
 	password := flag.String("password", "", "超级管理员密码")
-	configPath := flag.String("c", "../../config.yml", "配置文件路径")
+	configPath := flag.String("c", "D:\\Software\\Goland\\projects\\gin-vue-blog\\gin-blog-server\\config.yml", "配置文件路径")
 	flag.Parse()
 
 	// 根据命令行参数读取配置文件, 其他变量的初始化依赖于配置文件对象
